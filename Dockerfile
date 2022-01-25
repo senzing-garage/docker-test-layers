@@ -5,7 +5,7 @@ ENV REFRESHED_AT=2022-01-25
 
 LABEL Name="senzing/test-layers" \
       Maintainer="support@senzing.com" \
-      Version="0.0.1"
+      Version="1.0.0"
 
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
@@ -13,12 +13,24 @@ HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
 USER root
 
+# Install packages via apt.
+
+RUN apt update
+RUN apt -y install software-properties-common
+RUN apt -y install wget
+RUN apt -y install python3-pip
+
 # Install packages via PIP.
 
-COPY requirements.txt ./
-RUN pip3 install --upgrade pip \
- && pip3 install -r requirements.txt \
- && rm requirements.txt
+RUN pip3 install --upgrade pip
+RUN pip3 install boto3==1.18.36
+
+# Install Java.
+
+RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
+RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
+RUN apt update
+RUN apt install -y adoptopenjdk-11-hotspot
 
 # Install packages via apt.
 
