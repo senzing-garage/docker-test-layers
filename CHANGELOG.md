@@ -11,5 +11,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added to 1.0.0
 
 - Initial layers in Dockerfile based on
-  [senzing-api-server](https://github.com/Senzing/senzing-api-server)'s `Dockerfile`
+  [senzing-api-server](https://github.com/senzing-garage/senzing-api-server)'s `Dockerfile`
 - Added example `pip3` install
