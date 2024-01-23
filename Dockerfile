@@ -25,12 +25,16 @@ RUN apt -y install python3-pip
 RUN pip3 install --upgrade pip
 RUN pip3 install boto3==1.18.36
 
-# Install Java.
+# Install Java-11.
 
-RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
-RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-RUN apt update
-RUN apt install -y adoptopenjdk-11-hotspot
+RUN mkdir -p /etc/apt/keyrings \
+ && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
+
+RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" >> /etc/apt/sources.list
+
+RUN apt update \
+ && apt install -y temurin-11-jdk \
+ && rm -rf /var/lib/apt/lists/*
 
 # Install packages via apt.
 
