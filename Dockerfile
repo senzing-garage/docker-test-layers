@@ -4,8 +4,8 @@ FROM ${BASE_IMAGE}
 ENV REFRESHED_AT=2022-01-25
 
 LABEL Name="senzing/test-layers" \
-      Maintainer="support@senzing.com" \
-      Version="1.0.0"
+  Maintainer="support@senzing.com" \
+  Version="1.0.0"
 
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
@@ -13,12 +13,12 @@ HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
 USER root
 
-# Install packages via apt.
+# Install packages via apt-get.
 
-RUN apt update
-RUN apt -y install software-properties-common
-RUN apt -y install wget
-RUN apt -y install python3-pip
+RUN apt-get update
+RUN apt-get -y install software-properties-common
+RUN apt-get -y install wget
+RUN apt-get -y install python3-pip
 
 # Install packages via PIP.
 
@@ -28,15 +28,15 @@ RUN pip3 install boto3==1.18.36
 # Install Java-11.
 
 RUN mkdir -p /etc/apt/keyrings \
- && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
+  && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
 
 RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" >> /etc/apt/sources.list
 
-RUN apt update \
- && apt install -y temurin-11-jdk \
- && rm -rf /var/lib/apt/lists/*
+# Install packages via apt-get.
 
-# Install packages via apt.
+RUN apt-get update \
+  && apt-get install -y temurin-11-jdk \
+  && rm -rf /var/lib/apt/lists/*
 
 # Copy files from repository.
 
